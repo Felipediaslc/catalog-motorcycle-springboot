@@ -33,12 +33,20 @@ public class CategoryModel {
         this.description = description;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public String getType() {
         return type;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setType(String type) {
