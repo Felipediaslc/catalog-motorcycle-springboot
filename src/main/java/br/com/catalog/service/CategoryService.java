@@ -7,7 +7,9 @@ import br.com.catalog.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,10 +36,13 @@ public class CategoryService {
         return ResponseEntity.notFound().build();
     }
 
-    public void save(CategoryRequestDto categoryDto) {
+    public ResponseEntity save(CategoryRequestDto categoryDto, UriComponentsBuilder uriComponentsBuilder) {
         CategoryModel categoryModel = new CategoryModel(categoryDto.getType(), categoryDto.getDescription());
 
         categoryRepository.save(categoryModel);
+        URI uri = uriComponentsBuilder.path("/category/{id}").buildAndExpand(categoryModel.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new CategoryResponseDto(categoryModel));
     }
 
     public ResponseEntity delete(Integer id) {
