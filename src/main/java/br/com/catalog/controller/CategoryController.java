@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -31,10 +32,19 @@ public class CategoryController {
     }
 
     @PostMapping(path = "/")
+    @Transactional()
     public void save(@RequestBody @Valid CategoryRequestDto categoryDto) {
         categoryService.save(categoryDto);
     }
 
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity delete(@PathVariable Integer id) {
+        return categoryService.delete(id);
+    }
 
+    @PutMapping(path = "/{id}")
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody @Valid CategoryRequestDto categoryDto) {
+        return categoryService.update(id, categoryDto);
+    }
 
 }

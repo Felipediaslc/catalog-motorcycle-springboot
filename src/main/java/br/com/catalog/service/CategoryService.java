@@ -40,4 +40,30 @@ public class CategoryService {
         categoryRepository.save(categoryModel);
     }
 
+    public ResponseEntity delete(Integer id) {
+        Optional<CategoryModel> optional = categoryRepository.findById(id);
+
+        if(optional.isPresent()) {
+            categoryRepository.delete(optional.get());
+
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    public ResponseEntity update(Integer id, CategoryRequestDto categoryDto) {
+        Optional<CategoryModel> optional = categoryRepository.findById(id);
+
+        if(optional.isPresent()) {
+            optional.get().setDescription(categoryDto.getDescription());
+            optional.get().setType(categoryDto.getType());
+            categoryRepository.save(optional.get());
+
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
 }

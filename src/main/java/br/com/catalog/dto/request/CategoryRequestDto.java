@@ -27,4 +27,12 @@ public class CategoryRequestDto {
         return description;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
 }
