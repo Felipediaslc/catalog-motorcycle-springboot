@@ -24,7 +24,7 @@ public class CategoryController {
 
     @GetMapping(path = "/")
     @Cacheable(value = "allCategorys")
-    public List<CategoryResponseDto> getAll() {
+    public ResponseEntity<List<CategoryResponseDto>> getAll() {
         return categoryService.getAll();
     }
 

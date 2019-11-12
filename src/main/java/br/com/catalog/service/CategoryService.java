@@ -20,10 +20,13 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<CategoryResponseDto> getAll() {
+    public ResponseEntity<List<CategoryResponseDto>> getAll() {
         List<CategoryModel> categories = categoryRepository.findAll();
 
-        return categories.stream().map(CategoryResponseDto::new).collect(Collectors.toList());
+        List<CategoryResponseDto> categoriesDto =
+                categories.stream().map(CategoryResponseDto::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok(categoriesDto);
     }
 
     public ResponseEntity<CategoryResponseDto> getById(Integer id) {
