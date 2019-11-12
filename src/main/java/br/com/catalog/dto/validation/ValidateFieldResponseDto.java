@@ -1,11 +1,11 @@
 package br.com.catalog.dto.validation;
 
-public class ValidationErrorDto {
+public class ValidateFieldResponseDto {
 
     private String message;
     private String field;
 
-    public ValidationErrorDto(String message, String field) {
+    public ValidateFieldResponseDto(String message, String field) {
         this.message = message;
         this.field = field;
     }

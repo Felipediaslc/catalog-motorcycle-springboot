@@ -1,6 +1,6 @@
 package br.com.catalog.validation;
 
-import br.com.catalog.dto.validation.ValidationErrorDto;
+import br.com.catalog.dto.validation.ValidateFieldResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -22,15 +22,15 @@ public class ValidationFieldHandler {
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public List<ValidationErrorDto> handle(MethodArgumentNotValidException exception) {
+    public List<ValidateFieldResponseDto> handle(MethodArgumentNotValidException exception) {
         List<FieldError> errors = exception.getBindingResult().getFieldErrors();
-        List<ValidationErrorDto> errorsDto = new ArrayList<>();
+        List<ValidateFieldResponseDto> errorsDto = new ArrayList<>();
 
         errors.forEach(e -> {
             String message = messageSource.getMessage(e, LocaleContextHolder.getLocale());
             String field = e.getField();
 
-            ValidationErrorDto dto = new ValidationErrorDto(message, field);
+            ValidateFieldResponseDto dto = new ValidateFieldResponseDto(message, field);
             errorsDto.add(dto);
         });
 

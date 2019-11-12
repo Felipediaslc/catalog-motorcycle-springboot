@@ -10,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,7 +22,7 @@ public class CategoryController {
 
     @GetMapping(path = "/")
     @Cacheable(value = "allCategorys")
-    public ResponseEntity<List<CategoryResponseDto>> getAll() {
+    public ResponseEntity<List<CategoryResponseDto>> findAll() {
         return categoryService.getAll();
     }
 
@@ -34,21 +32,18 @@ public class CategoryController {
     }
 
     @PostMapping(path = "/")
-    @Transactional()
     @CacheEvict(value = "allCategorys", allEntries = true)
     public ResponseEntity save(@RequestBody @Valid CategoryRequestDto categoryDto, UriComponentsBuilder uriComponentsBuilder) {
         return categoryService.save(categoryDto, uriComponentsBuilder);
     }
 
     @DeleteMapping(path = "/{id}")
-    @Transactional()
     @CacheEvict(value = "allCategorys", allEntries = true)
     public ResponseEntity delete(@PathVariable Integer id) {
         return categoryService.delete(id);
     }
 
     @PutMapping(path = "/{id}")
-    @Transactional()
     @CacheEvict(value = "allCategorys", allEntries = true)
     public ResponseEntity update(@PathVariable Integer id, @RequestBody @Valid CategoryRequestDto categoryDto) {
         return categoryService.update(id, categoryDto);

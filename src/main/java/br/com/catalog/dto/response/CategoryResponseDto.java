@@ -3,8 +3,10 @@ package br.com.catalog.dto.response;
 import br.com.catalog.model.CategoryModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude
+@JsonPropertyOrder(alphabetic = true)
 public class CategoryResponseDto {
 
     @JsonProperty(value = "id")
