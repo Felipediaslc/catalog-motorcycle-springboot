@@ -22,17 +22,16 @@ public class RequestBodyExceptionHandler {
     @Autowired
     private MessageSource messageSource;
 
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity handleInvalidRequestBody(MethodArgumentNotValidException exception) {
-
-        HashMap<String, Object> body = new HashMap<>();
-
         List<ValidateFieldResponseDto> errorsDto = new ArrayList<>();
         List<FieldError> fieldErros = exception.getBindingResult().getFieldErrors();
 
-        body.put("statusCode", HttpStatus.BAD_REQUEST.value());
-        body.put("fieldsValidations", errorsDto);
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("typeStatus", HttpStatus.BAD_REQUEST);
+        body.put("typeError", "fieldsValidations");
+        body.put("messages", errorsDto);
 
         fieldErros.forEach(e -> {
             String fieldMessage = messageSource.getMessage(e, LocaleContextHolder.getLocale());
@@ -40,7 +39,7 @@ public class RequestBodyExceptionHandler {
             errorsDto.add(validationErrorDto);
         });
 
-        return ResponseEntity.ok(body);
+        return new ResponseEntity(body, HttpStatus.BAD_REQUEST);
     }
 
 }
