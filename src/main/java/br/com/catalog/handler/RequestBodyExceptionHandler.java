@@ -30,7 +30,7 @@ public class RequestBodyExceptionHandler {
         HashMap<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("typeStatus", HttpStatus.BAD_REQUEST);
-        body.put("typeError", "fieldsValidations");
+        body.put("typeError", "invalidFieldValue");
         body.put("messages", errorsDto);
 
         fieldErros.forEach(e -> {
