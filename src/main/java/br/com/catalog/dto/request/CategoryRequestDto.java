@@ -10,13 +10,13 @@ public class CategoryRequestDto {
     @NotNull
     @NotBlank
     @NotEmpty
-    @Size(max = 20)
+    @Size(min = 1, max = 20)
     private String type;
 
     @NotNull
+    @NotBlank
     @NotEmpty
-    @NotEmpty
-    @Size(max = 50)
+    @Size(min = 10, max = 50)
     private String description;
 
     public String getType() {
