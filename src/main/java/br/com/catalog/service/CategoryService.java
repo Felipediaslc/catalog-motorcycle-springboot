@@ -39,13 +39,10 @@ public class CategoryService {
         return ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity save(CategoryRequestDto categoryDto, UriComponentsBuilder uriComponentsBuilder) {
+    public CategoryModel save(CategoryRequestDto categoryDto) {
         CategoryModel categoryModel = new CategoryModel(categoryDto.getType(), categoryDto.getDescription());
 
-        categoryRepository.save(categoryModel);
-        URI uri = uriComponentsBuilder.path("/category/{id}").buildAndExpand(categoryModel.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(new CategoryResponseDto(categoryModel));
+        return categoryRepository.save(categoryModel);
     }
 
     public ResponseEntity delete(Integer id) {

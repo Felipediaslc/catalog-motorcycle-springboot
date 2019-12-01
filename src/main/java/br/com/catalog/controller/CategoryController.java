@@ -2,6 +2,7 @@ package br.com.catalog.controller;
 
 import br.com.catalog.dto.request.CategoryRequestDto;
 import br.com.catalog.dto.response.CategoryResponseDto;
+import br.com.catalog.model.CategoryModel;
 import br.com.catalog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -33,8 +35,12 @@ public class CategoryController {
 
     @PostMapping(path = "/")
     @CacheEvict(value = "allCategorys", allEntries = true)
-    public ResponseEntity save(@RequestBody @Valid CategoryRequestDto categoryDto, UriComponentsBuilder uriComponentsBuilder) {
-        return categoryService.save(categoryDto, uriComponentsBuilder);
+    public ResponseEntity<?> save(@RequestBody @Valid CategoryRequestDto categoryDto, UriComponentsBuilder uriComponentsBuilder) {
+        CategoryModel categoryModel = categoryService.save(categoryDto);
+
+        URI uri = uriComponentsBuilder.path("/category/{id}").buildAndExpand(categoryModel.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new CategoryResponseDto(categoryModel));
     }
 
     @DeleteMapping(path = "/{id}")
@@ -45,7 +51,7 @@ public class CategoryController {
 
     @PutMapping(path = "/{id}")
     @CacheEvict(value = "allCategorys", allEntries = true)
-    public ResponseEntity update(@PathVariable Integer id, @RequestBody @Valid CategoryRequestDto categoryDto) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody @Valid CategoryRequestDto categoryDto) {
         return categoryService.update(id, categoryDto);
     }
 

@@ -1,9 +1,6 @@
 package br.com.catalog.dto.request;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class CategoryRequestDto {
 
@@ -11,12 +8,14 @@ public class CategoryRequestDto {
     @NotBlank
     @NotEmpty
     @Size(min = 1, max = 20)
+    @Pattern(regexp = "^[^\\s]+(\\s+[^\\s]+)*$")
     private String type;
 
     @NotNull
     @NotBlank
     @NotEmpty
     @Size(min = 10, max = 50)
+    @Pattern(regexp = "^[^\\s]+(\\s+[^\\s]+)*$")
     private String description;
 
     public String getType() {

@@ -7,13 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = CatalogApplication.class)
-@TestPropertySource(locations = "/application.properties")
-@AutoConfigureMockMvc
+//@ExtendWith(SpringExtension.class)
+//@SpringBootTest(classes = CatalogApplication.class)
+//@TestPropertySource(locations = "/application.properties")
+//@AutoConfigureMockMvc
 public class CatalogApplicationTests {
 
-	@Test
+//	@Test
 	void contextLoads() {
 	}
 
