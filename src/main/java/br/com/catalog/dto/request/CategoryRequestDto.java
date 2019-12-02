@@ -14,9 +14,18 @@ public class CategoryRequestDto {
     @NotNull
     @NotBlank
     @NotEmpty
+
     @Size(min = 10, max = 50)
     @Pattern(regexp = "^[^\\s]+(\\s+[^\\s]+)*$")
     private String description;
+
+    public CategoryRequestDto(String type, String description) {
+        this.type = type;
+        this.description = description;
+    }
+
+    public CategoryRequestDto() {
+    }
 
     public String getType() {
         return type;

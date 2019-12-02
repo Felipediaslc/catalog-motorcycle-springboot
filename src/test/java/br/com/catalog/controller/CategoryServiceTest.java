@@ -4,54 +4,40 @@ import br.com.catalog.dto.request.CategoryRequestDto;
 import br.com.catalog.model.CategoryModel;
 import br.com.catalog.repository.CategoryRepository;
 import br.com.catalog.service.CategoryService;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CategoryService.class)
-public class CategoryServiceTest {
+public class CategoryServiceTest{
 
-    @InjectMocks
-    private CategoryService categoryService;
+    @Autowired
+    CategoryService categoryService;
 
-    @Mock
-    private CategoryRepository categoryRepository;
+    @MockBean
+    CategoryRepository categoryRepository;
 
     @Test
-    public void saveCategoryShouldReturn201() throws Exception {
+    public void saveCategoryShouldReturn201() {
         CategoryRequestDto categoryRequestDto = new CategoryRequestDto();
         categoryRequestDto.setDescription("MOTOCYCLE FOR URBAN");
         categoryRequestDto.setType("URBAN");
 
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance();
-
-        String json = "{\"type\": \"+ type +\", \"description\": \"+ description +\"}";
-
-        when(categoryRepository.save(any(CategoryModel.class))).thenReturn(new CategoryModel());
+        when(categoryRepository.save(any(CategoryModel.class)))
+                .thenReturn(new CategoryModel(categoryRequestDto.getType(), categoryRequestDto.getDescription()));
 
         CategoryModel category = categoryService.save(categoryRequestDto);
 
-//        this.mockMvc.perform(post("/category/")
-//                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//                .header(HttpHeaders.ACCEPT_LANGUAGE, "pt-BR")
-//                .characterEncoding("utf-8")
-//                .content(json))
+        assertEquals("Valor do campo type não é igual", categoryRequestDto.getType(), category.getType());
+        assertEquals("Valor do campo description não é igual", categoryRequestDto.getDescription(), category.getDescription());
+
 //                .andDo(print())
 //                .andExpect(status().isCreated())
 //                .andExpect(header().string("Location", Matchers.notNullValue()))

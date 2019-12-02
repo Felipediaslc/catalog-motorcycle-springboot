@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 @RestControllerAdvice
 public class RequestBodyExceptionHandler {
@@ -23,18 +24,18 @@ public class RequestBodyExceptionHandler {
     private MessageSource messageSource;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity handleInvalidRequestBody(MethodArgumentNotValidException exception) {
+    public ResponseEntity<?> handleInvalidRequestBody(MethodArgumentNotValidException exception) {
         List<ValidateFieldResponseDto> errorsDto = new ArrayList<>();
         List<FieldError> fieldErros = exception.getBindingResult().getFieldErrors();
 
         HashMap<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("typeStatus", HttpStatus.BAD_REQUEST);
-        body.put("typeError", "invalidFieldValue");
+        body.put("type", HttpStatus.BAD_REQUEST);
+        body.put("error", "Invalid field value");
         body.put("messages", errorsDto);
 
         fieldErros.forEach(e -> {
-            String fieldMessage = messageSource.getMessage(e, LocaleContextHolder.getLocale());
+            String fieldMessage = messageSource.getMessage(e, new Locale("en", "US"));
             ValidateFieldResponseDto validationErrorDto = new ValidateFieldResponseDto(fieldMessage, e.getField());
             errorsDto.add(validationErrorDto);
         });

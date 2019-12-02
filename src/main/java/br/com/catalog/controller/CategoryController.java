@@ -2,6 +2,7 @@ package br.com.catalog.controller;
 
 import br.com.catalog.dto.request.CategoryRequestDto;
 import br.com.catalog.dto.response.CategoryResponseDto;
+import br.com.catalog.exception.CategoryNotFoundException;
 import br.com.catalog.model.CategoryModel;
 import br.com.catalog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/category")
@@ -29,8 +31,12 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CategoryResponseDto> getById(@PathVariable Integer id) {
-        return categoryService.getById(id);
+    public ResponseEntity getById(@PathVariable Integer id) throws CategoryNotFoundException {
+        Optional<CategoryModel> categoryOptional = categoryService.getById(id);
+
+        return categoryOptional.map(category -> {
+            return ResponseEntity.ok().body(new CategoryResponseDto(categoryOptional.get()));
+        }).orElseThrow(CategoryNotFoundException::new);
     }
 
     @PostMapping(path = "/")

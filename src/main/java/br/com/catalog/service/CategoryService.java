@@ -2,14 +2,13 @@ package br.com.catalog.service;
 
 import br.com.catalog.dto.request.CategoryRequestDto;
 import br.com.catalog.dto.response.CategoryResponseDto;
+import br.com.catalog.exception.CategoryNotFoundException;
 import br.com.catalog.model.CategoryModel;
 import br.com.catalog.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,14 +28,8 @@ public class CategoryService {
         return ResponseEntity.ok(categoriesDto);
     }
 
-    public ResponseEntity<CategoryResponseDto> getById(Integer id) {
-        Optional<CategoryModel> optinal = categoryRepository.findById(id);
-
-        if(optinal.isPresent()) {
-            return ResponseEntity.ok(new CategoryResponseDto(optinal.get()));
-        }
-
-        return ResponseEntity.notFound().build();
+    public Optional<CategoryModel> getById(Integer id) {
+        return categoryRepository.findById(id);
     }
 
     public CategoryModel save(CategoryRequestDto categoryDto) {
